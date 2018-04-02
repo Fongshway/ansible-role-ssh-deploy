@@ -1,0 +1,16 @@
+---
+- name: Ensure deploy key is present
+  copy:
+    content: "{{ lookup('file', ssh_deploy_private_key_file) }}"
+    dest: "{{ ssh_deploy_private_key_file }}"
+    mode: 0600
+    owner: "{{ ssh_deploy_username }}"
+  become: true
+  become_user: "{{ ssh_deploy_username }}"
+
+- name: Add ssh config
+  template:
+    src: .ssh/config.j2
+    dest: ~/.ssh/config
+  become: true
+  become_user: "{{ ssh_deploy_username }}"
